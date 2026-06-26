@@ -1,0 +1,46 @@
+name: CI
+
+on: [push]
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    container: ubuntu:latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install required packages
+        run: apt-get update && apt-get install -y git
+      - name: Install dotfiles
+        run: .bin/install.sh --no-tools
+
+  alpine:
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install required packages
+        run: apk add git bash
+      - name: Install dotfiles
+        run: .bin/install.sh --no-tools
+
+  arch:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Update packages
+        run: pacman -Syu --noconfirm
+      - name: Install required packages
+        run: pacman -S --noconfirm git
+      - name: Install dotfiles
+        run: .bin/install.sh --no-tools
+
+  lint:
+    runs-on: ubuntu-latest
+    container: ubuntu:latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install shellcheck
+        run: apt-get update && apt-get install -y shellcheck
+      - name: Execute shellcheck
+        run: shellcheck .bin/install.sh .bin/install_tools.sh
