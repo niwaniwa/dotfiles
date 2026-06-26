@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu:latest
     steps:
-      - uses: actions/checkout@7
+      - uses: actions/checkout@v7
       - name: Update packages
         run: apt-get update
       - name: Install packages for install repository
